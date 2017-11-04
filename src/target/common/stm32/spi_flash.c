@@ -118,6 +118,17 @@ void detect_memory_type()
             spiflash_sectors      = 1 << ((capacity & 0x0f) + 4);
         }
         break;
+    case 0xC8: // GigaDevice
+        if (memtype == 0x40) { // GD25Q*C
+            printf("GigaDevice GD25Q SPI Flash found\n");
+            SPIFLASH_PROTECT_MASK = 0x1C;
+            SPIFLASH_WRITE_SIZE   = 1;
+            SPIFLASH_WRITE_CMD    = 0x02;
+            SPIFLASH_FAST_READ    = 1;
+            SPIFLASH_USE_AAI      = 0;
+            spiflash_sectors      = 1 << ((capacity & 0x0f) + 4);
+        }
+        break;
     case 0x7F: // Extension code, older ISSI, maybe some others
         if (memtype == 0x9D && capacity == 0x46) {
             printf("ISSI IS25CQ032 SPI Flash found\n");
